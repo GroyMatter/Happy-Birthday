@@ -94,10 +94,15 @@ body {
 }
 
 /* Question Screen Styles */
-.options {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
+
+/* NEW CODE: Added positioning and space for the moving button */
+#question-screen .options {
+    position: relative; 
+    min-height: 100px; 
+    align-items: flex-start; 
+    display: flex; /* Keep this to align buttons */
+    justify-content: space-around; /* Keep this for spacing */
+    margin-top: 30px; /* Keep this for spacing */
 }
 
 .btn {
@@ -110,6 +115,11 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
     flex-grow: 1;
     margin: 0 10px;
+    /* NEW CODE: Prevent text selection during button movement */
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none; 
 }
 
 #sobra-button {
@@ -120,6 +130,9 @@ body {
 #hindi-button {
     background-color: #f44336; /* Red */
     color: white;
+    /* NEW CODE: Ensure it can be moved by JS */
+    position: relative;
+    transition: all 0.1s ease-out; /* Smooth initial movement */
 }
 
 .btn:hover {
