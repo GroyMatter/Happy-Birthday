@@ -8,13 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const nicknameInput = document.getElementById('nickname-input');
     const loginButton = document.getElementById('login-button');
     const errorMessage = document.getElementById('error-message');
-    
+
     // Accepted nicknames (case-insensitive)
     const acceptedNicknames = ['roy', 'be', 'beb', 'mahal', 'buba', 'bebeb', 'baby'];
 
     // --- Question Screen Elements ---
     const sobraButton = document.getElementById('sobra-button');
     const hindiButton = document.getElementById('hindi-button');
+
+    // State variable to track if 'SOBRA' has been clicked
+    let sobraClicked = false;
 
     // --- Function to switch screens ---
     function showScreen(screenToShow) {
@@ -27,12 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Login Logic ---
     loginButton.addEventListener('click', () => {
         const inputNickname = nicknameInput.value.trim().toLowerCase();
-        
+
         if (acceptedNicknames.includes(inputNickname)) {
             errorMessage.textContent = '';
             showScreen(questionScreen);
         } else {
-            errorMessage.textContent = 'Nickname is incorrect. Try again, love! 😊';
+            // Updated error message for incorrect nickname
+            errorMessage.textContent = 'MALI SINONG LALAKI YAN BEBENG BRUH!! 😡';
         }
     });
 
@@ -44,12 +48,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Question Logic ---
-    hindiButton.addEventListener('click', () => {
-        // Loop back to the question screen, you can also add a shake effect or a fun message here
-        alert("Oh no! Try again. The answer must be 'SOBRA' for us to continue! 😉");
+
+    // Make 'Hindi Bruh' button move
+    hindiButton.addEventListener('mouseover', () => {
+        if (!sobraClicked) { // Only move if 'SOBRA' hasn't been clicked
+            const containerRect = hindiButton.closest('.options').getBoundingClientRect();
+            const buttonRect = hindiButton.getBoundingClientRect();
+
+            // Calculate new random position within the container bounds
+            // We want it to stay mostly within the options div to not disappear
+            const newX = Math.random() * (containerRect.width - buttonRect.width) - (buttonRect.left - containerRect.left);
+            const newY = Math.random() * (containerRect.height - buttonRect.height) - (buttonRect.top - containerRect.top);
+
+
+            hindiButton.style.position = 'relative'; // Ensure relative positioning for top/left
+            hindiButton.style.left = `${newX}px`;
+            hindiButton.style.top = `${newY}px`;
+            hindiButton.style.transition = 'all 0.1s ease-out'; // Smooth movement
+        }
     });
 
+    // Reset button position when mouse leaves (optional, but makes it less frustrating)
+    hindiButton.addEventListener('mouseout', () => {
+        if (!sobraClicked) {
+            hindiButton.style.left = '0px';
+            hindiButton.style.top = '0px';
+            hindiButton.style.transition = 'all 0.3s ease-in-out';
+        }
+    });
+
+    // If 'Hindi Bruh' is clicked, do nothing (or show a subtle message)
+    hindiButton.addEventListener('click', () => {
+        if (!sobraClicked) {
+            // Optionally, you could add a subtle text message here instead of an alert
+            // For now, we'll just let the movement do the talking.
+        }
+    });
+
+
     sobraButton.addEventListener('click', () => {
+        sobraClicked = true; // Set the flag
+        // Reset hindiButton position just in case, and remove its hover effect
+        hindiButton.style.position = 'static';
+        hindiButton.style.left = '0';
+        hindiButton.style.top = '0';
+        hindiButton.style.transition = 'none'; // Disable transition after 'SOBRA' is clicked
+        // You might want to disable the hover effect or make the button less prominent
+        hindiButton.style.pointerEvents = 'none'; // Make it unclickable after SOBA is picked
+        hindiButton.style.opacity = '0.5'; // Visually indicate it's disabled
+
         showScreen(messageScreen);
     });
 
@@ -60,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createHeart() {
         const heart = document.createElement('div');
         heart.classList.add('heart');
-        heart.innerHTML = '💖'; 
-        
+        heart.innerHTML = '💖';
+
         // Randomize position and animation delay
         heart.style.left = `${Math.random() * 100}vw`;
         heart.style.animationDuration = `${Math.random() * 8 + 6}s`; // 6s to 14s duration
@@ -82,6 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Keep generating new hearts every second
-    setInterval(createHeart, 1000); 
+    setInterval(createHeart, 1000);
 
 });
